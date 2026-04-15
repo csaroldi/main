@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Field Guide | Claudio SAROLDI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080808;
+            --text-color: #ffffff;
+            --secondary-text: #666666;
+            --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        header {
+            height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .label {
+            color: var(--secondary-text);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .portal {
+            display: flex;
+            height: 70vh;
+            width: 100%;
+            background: #000;
+        }
+
+        .dest-card {
+            position: relative;
+            flex: 1;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3.5rem 2.5rem;
+            overflow: hidden;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+        }
+
+        .bg-img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) brightness(30%);
+            z-index: 1;
+            transition: var(--transition);
+            background-color: #111;
+        }
+
+        .london .bg-img  { background-image: url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1200'); }
+        .paris .bg-img   { background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200'); }
+        .montenegro .bg-img {
+            background-image: url('https://images.unsplash.com/photo-1587551323667-d58e6c839b23?q=80&w=2126&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        }
+        .dubrovnik .bg-img { background-image: url('https://images.unsplash.com/photo-1555990793-da11153b2473?q=80&w=1200'); }
+        .gdansk .bg-img    { background-image: url('https://images.unsplash.com/photo-1639240118714-dd0541279cc6?q=80&w=2531&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); }
+        .belgrade .bg-img  { background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/1e/Zindan_kapija_i_most.jpg'); }
+
+        /* COMING SOON — non-interactive */
+        .coming-soon {
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
+        .coming-soon::after {
+            content: 'COMING SOON';
+            position: absolute;
+            top: 2.5rem;
+            left: 2.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.5);
+            z-index: 3;
+        }
+
+        .dest-card h2, .dest-card p {
+            position: relative;
+            z-index: 2;
+        }
+
+        .dest-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .dest-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 260px;
+            line-height: 1.5;
+        }
+
+        /* Desktop Interactions */
+        @media (min-width: 769px) {
+            .dest-card:hover { flex: 1.6; }
+            .dest-card:hover .bg-img { filter: grayscale(0%) brightness(50%); transform: scale(1.05); }
+            .dest-card p { opacity: 0; transform: translateY(20px); transition: var(--transition); }
+            .dest-card:hover p { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Layout & Scroll Activation */
+        @media (max-width: 768px) {
+            .portal { flex-direction: column; height: auto; }
+            .dest-card { height: 50vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .dest-card h2 { font-size: 2.2rem; }
+            .dest-card.active .bg-img { filter: grayscale(0%) brightness(50%); }
+            .dest-card p { opacity: 0; transform: translateY(10px); transition: var(--transition); }
+            .dest-card.active p { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            padding: 5rem 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <p class="label">Curated Experiences</p>
+        <h1>A Field Guide to...</h1>
+    </header>
+
+    <nav class="portal">
+        <a href="https://csaroldi.github.io/london/index.html" class="dest-card london">
+            <div class="bg-img"></div>
+            <h2>Lon*don*</h2>
+            <p>Overcrowded, overpriced, unforgettable. The big smoke, curated.</p>
+        </a>
+
+        <a href="https://csaroldi.github.io/paris/index.html" class="dest-card paris">
+            <div class="bg-img"></div>
+            <h2>Par*is*</h2>
+            <p>A guide made for friends. The City of Light at your own pace.</p>
+        </a>
+
+        <a href="https://csaroldi.github.io/montenegro/index.html" class="dest-card montenegro">
+            <div class="bg-img"></div>
+            <h2>Montenegro*</h2>
+            <p>Wild beauty on the Adriatic. Where mountains meet the medieval coast.</p>
+        </a>
+
+        <a href="https://csaroldi.github.io/dubrovnik/index.html" class="dest-card dubrovnik">
+            <div class="bg-img"></div>
+            <h2>Dubrovnik*</h2>
+            <p>Marble streets, ancient walls, and the Adriatic at every turn.</p>
+        </a>
+
+        <a href="https://csaroldi.github.io/gdansk/index.html" class="dest-card gdansk">
+            <div class="bg-img"></div>
+            <h2>Gdańsk*</h2>
+            <p>Hanseatic grandeur on the Baltic. Amber, history, and cold beer.</p>
+        </a>
+
+        <a href="https://csaroldi.github.io/belgrade/index.html" class="dest-card belgrade">
+            <div class="bg-img"></div>
+            <h2>Belgrade*</h2>
+            <p>Two rivers, one fortress, and a nightlife that doesn't sleep.</p>
+        </a>
+    </nav>
+
+    <footer>
+        &copy; 2025 Claudio SAROLDI
+    </footer>
+
+    <script>
+        const observerOptions = { threshold: 0.6 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.dest-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
